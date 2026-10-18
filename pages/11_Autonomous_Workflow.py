@@ -126,6 +126,7 @@ if result:
                 st.session_state.rover_playing = False
                 st.session_state.rover_preflight = result.preflight
                 st.session_state.rover_transfer_settings = (per_step, int(capacity), reserve)
+                st.session_state.rover_mission_settings = (per_step, int(capacity), reserve)
                 st.switch_page("pages/4_Virtual_Rover.py")
         rover = st.session_state.get("auto_rover")
         if rover:

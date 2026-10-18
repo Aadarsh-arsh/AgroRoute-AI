@@ -90,6 +90,8 @@ with st.sidebar:
 info = overview(farm, diagnoses, rain, threshold)
 counts = info['counts']
 safe_name = escape(farm.name)
+from pathlib import Path
+model_status = "MobileNetV2 available" if (Path("models/mobile_net_v2/model.keras").is_file() and Path("models/mobile_net_v2/metadata.json").is_file()) else "MobileNetV2 not installed"
 known_diseases = [p.disease for p in info['plans'] if p.disease != 'Unknown']
 priority_text = 'High priority attention needed' if info['high_priority'] else 'No high priority alerts'
 manual_text = f"{info['manual_review']} zone(s) need manual validation" if info['manual_review'] else 'All current zones are reviewed'
@@ -106,7 +108,7 @@ st.markdown(
         </div>
       </div>
       <div class="top-actions">
-        <div class="pill">🧠 MobileNetV2 Active</div>
+        <div class="pill">🧠 {model_status}</div>
         <div class="pill">🤖 Rover Ready</div>
         <div class="pill">🛰 Planner: {planner}</div>
       </div>
@@ -309,6 +311,8 @@ elif result and check:
                 st.session_state.rover_state = RoverState(result.path, capacity=int(capacity))
                 st.session_state.rover_playing = False
                 st.session_state.rover_preflight = check
+                st.session_state.rover_transfer_settings = (rate, int(capacity), reserve)
+                st.session_state.rover_mission_settings = (rate, int(capacity), reserve)
                 st.switch_page('pages/4_Virtual_Rover.py')
 
 st.markdown('<div class="footer-note">AgroRoute AI is an academic software simulation. Disease prediction confidence is approximate, and treatment recommendations should be validated with trusted agricultural sources.</div>', unsafe_allow_html=True)

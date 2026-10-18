@@ -1,5 +1,6 @@
 """Pure mission preflight checks for simulated return-to-base rover missions."""
 from dataclasses import dataclass
+from math import isfinite
 from .farm import Farm
 
 @dataclass(frozen=True)
@@ -12,13 +13,13 @@ class Preflight:
 
 def preflight(farm: Farm, path: list[tuple[int, int]], per_step: float,
               capacity: int, reserve: float = 15.0, battery: float = 100.0) -> Preflight:
-    if per_step < 0 or not 0 <= reserve <= 100 or not 0 <= battery <= 100 or capacity < 0:
+    if not all(isfinite(float(x)) for x in (per_step, reserve, battery, capacity)) or per_step < 0 or not 0 <= reserve <= 100 or not 0 <= battery <= 100 or capacity < 0:
         raise ValueError('Invalid mission settings')
     issues = []
     if not path or path[0] != farm.rover or path[-1] != farm.rover:
         issues.append('Mission must start and return to the rover base')
     for a, b in zip(path, path[1:]):
-        if not farm.in_bounds(*b) or farm.cells[b[0]][b[1]] == 'obstacle' or abs(a[0]-b[0])+abs(a[1]-b[1]) != 1:
+        if not farm.in_bounds(*a) or not farm.in_bounds(*b) or farm.cells[b[0]][b[1]] == 'obstacle' or abs(a[0]-b[0])+abs(a[1]-b[1]) != 1:
             issues.append('Route contains an invalid movement or obstacle')
             break
     targets = {(r,c) for r in range(farm.rows) for c in range(farm.cols) if farm.cells[r][c]=='infected'}

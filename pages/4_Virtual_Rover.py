@@ -38,14 +38,21 @@ with st.sidebar:
             st.session_state.rover_preflight=check
             st.session_state.rover_mission=result
             st.session_state.rover_state=RoverState(result.path,capacity=int(capacity))
+            st.session_state.rover_mission_settings=(per_step,int(capacity),reserve)
         else: st.error(result.message)
 result=st.session_state.get('rover_mission'); rover=st.session_state.get('rover_state')
+if result is not None and 'rover_mission_settings' not in st.session_state:
+    st.session_state.rover_mission_settings=(per_step,int(capacity),reserve)
+settings_changed = (result is not None and st.session_state.get('rover_mission_settings') != (per_step,int(capacity),reserve))
+if settings_changed:
+    st.session_state.rover_playing=False
+    st.warning('Mission settings changed. Generate a new mission before resuming the rover.')
 if rover and result:
     a,b,c,d=st.columns(4)
     a.metric('Status',rover.status); b.metric('Battery',f'{rover.battery:.1f}%')
     c.metric('Inspected zones',len(rover.inspected)); d.metric('Movement',f'{rover.step}/{len(rover.path)-1}')
     check=preflight(farm,result.path,per_step,int(capacity),reserve,rover.battery+rover.step*per_step)
-    if check.feasible:
+    if check.feasible and not settings_changed:
         st.success(f'Return-to-base route validated · {check.steps} steps · projected final battery {check.estimated_battery_end:.1f}%')
     else:
         st.error('Mission preflight failed: ' + '; '.join(check.issues))
@@ -53,13 +60,13 @@ if rover and result:
     speed=st.slider('Playback interval (seconds)',0.2,2.0,0.5,0.1)
     st.session_state.rover_speed=speed
     a1,a2,a3,a4=st.columns(4)
-    if a1.button('▶ Play / Resume',disabled=not check.feasible or rover.status=='Completed',use_container_width=True):
+    if a1.button('▶ Play / Resume',disabled=not check.feasible or settings_changed or rover.status in ('Completed','Blocked','Battery depleted','Invalid route','Inspection capacity reached','No route'),use_container_width=True):
         st.session_state.rover_playing=True
     if a2.button('⏸ Pause',use_container_width=True):
         st.session_state.rover_playing=False
-    if a3.button('⏭ Step',disabled=not check.feasible or st.session_state.get('rover_playing',False),use_container_width=True):
+    if a3.button('⏭ Step',disabled=not check.feasible or settings_changed or rover.status in ('Completed','Blocked','Battery depleted','Invalid route','Inspection capacity reached','No route') or st.session_state.get('rover_playing',False),use_container_width=True):
         rover.tick(farm,per_step)
-    if a4.button('↺ Reset',use_container_width=True):
+    if a4.button('↺ Reset',disabled=settings_changed,use_container_width=True):
         st.session_state.rover_playing=False
         st.session_state.rover_state=RoverState(result.path,capacity=int(capacity))
         rover=st.session_state.rover_state
@@ -68,7 +75,7 @@ if rover and result:
     @st.fragment(run_every=speed)
     def live_rover():
         active=st.session_state.get('rover_state')
-        if st.session_state.get('rover_playing',False) and active is not None:
+        if st.session_state.get('rover_playing',False) and not settings_changed and active is not None:
             if not active.tick(farm,per_step):
                 st.session_state.rover_playing=False
             if active.status in ('Completed','Blocked','Battery depleted','Invalid route','Inspection capacity reached'):
