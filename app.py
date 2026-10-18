@@ -99,4 +99,5 @@ with right:
     st.subheader('🧭 Project status')
     st.success('Farm editor is operational')
     st.write('**Now available:** use the **Algorithm Lab** page in the navigation sidebar to run A*, UCS and Greedy Best-First.')
-    st.caption('Use the navigation sidebar for Mission Planner, Virtual Rover, Expert System, CSP and Real Disease Detection.')
+    st.caption('Use Smart Dashboard for a guided workflow, or choose individual pages from the navigation sidebar.')
+    st.page_link('pages/1_Smart_Dashboard.py',label='🌱 Open Smart Agriculture Dashboard',use_container_width=True)
