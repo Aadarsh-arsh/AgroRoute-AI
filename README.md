@@ -87,3 +87,20 @@ git push origin main
 ```
 
 **Scope note:** This is Phase 3, not the complete eight-phase system. Disease detection, expert reasoning, scheduling and full rover animation remain separate milestones.
+
+
+## Integrated prototype (Phases 4–7)
+
+Additional Streamlit pages: Virtual Rover, AI Learning, Expert System, CSP Scheduler.
+
+**Important limitations:** The AI Learning page contains a synthetic-data Decision Tree and K-Means teaching demonstration and image feature extraction, NOT a trained plant disease detector. The rover battery/capacity model is illustrative. The CSP scheduler currently ignores travel times. Rule-based advice is educational only. Do not represent these as field-validated models or agricultural recommendations.
+
+Windows:
+```powershell
+cd D:\AgroRoute_AI
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe -m streamlit run app.py
+```
+
+Next priorities: labeled tomato dataset training, proper test split and disease evaluation, travel-aware scheduling, scenario persistence, integration and UI testing.
