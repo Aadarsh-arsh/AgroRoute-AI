@@ -1,0 +1,46 @@
+AGROUTE AI — PREMIUM DESIGN SYSTEM UPGRADE
+============================================
+
+WHAT CHANGED
+- Unified light green/white design on the Farm Designer, Smart Dashboard and
+  all nine remaining workspaces.
+- Shared typography, page headers, sidebar branding, navigation, KPI cards,
+  buttons, data tables, alerts, graph containers and footers.
+- Improved farm heatmap axis bounds, integer-only ticks, severity markers and
+  route overlay presentation.
+- Model Comparison: compact horizontal accuracy bars and confusion matrices.
+- Real Disease Detection: confusion matrix visualization and low-probability
+  manual review warning.
+- Algorithm Lab: search efficiency chart.
+- Mission Planner: visit-route performance chart.
+- AI Learning: readable educational results and feature metrics.
+- Expert System: table of facts and numbered inference trace.
+- CSP Scheduler: slot timeline chart.
+- Smart Treatment: inspection priority chart.
+- Outdated phase mentions in visible navigation content cleaned up.
+
+SAFE INSTALLATION
+1) Make a backup of D:\AgroRoute_AI (or make sure Git has your latest commit).
+2) Extract the ZIP. Open the AgroRoute_AI folder inside.
+3) Copy its CONTENTS into D:\AgroRoute_AI, replacing code files.
+4) KEEP your existing .git, .venv, data/plant_leaves, models/mobile_net_v2
+   and any .streamlit/secrets.toml. They are intentionally not in this ZIP.
+5) If Streamlit is running, Ctrl+C, then restart in PowerShell:
+      cd D:\AgroRoute_AI
+      .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+      .\.venv\Scripts\python.exe -m unittest discover -s tests -v
+      .\.venv\Scripts\python.exe -m streamlit run app.py
+6) Verify page rendering and chart alignment on your browser. A full
+   Streamlit browser smoke test was not run in the packaging environment.
+
+GIT UPDATE (AFTER TESTING)
+    git status
+    git add .
+    git commit -m "feat: unify AgroRoute AI UI and refine all visualizations"
+    git push origin main
+
+SAFETY NOTES
+- Machine-learning probabilities are uncalibrated, not confirmed diagnoses.
+- Scheduling does not account for route travel times yet.
+- Virtual rover battery assumptions are simulated, not hardware-calibrated.
+- Academic documentation and presentations remain for a later milestone.

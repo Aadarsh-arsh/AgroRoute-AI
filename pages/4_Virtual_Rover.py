@@ -7,10 +7,11 @@ from agroroute.mission import mission
 from agroroute.rover import RoverState
 from agroroute.mission_control import preflight
 from agroroute.visualization import farm_figure
+from agroroute.ui import apply_theme, page_hero, info_strip, footer
 st.set_page_config(page_title='AgroRoute | Virtual Rover',page_icon='🤖',layout='wide')
-st.title('🤖 Virtual Rover Simulator')
-st.caption('Live mission dashboard · route execution · inspection telemetry')
-st.caption('Deterministic tick-based rover simulation. Battery use and capacity are illustrative, not hardware-calibrated.')
+apply_theme()
+page_hero('Virtual Rover Simulator', 'Execute optimized missions, inspect infected crop zones and watch battery telemetry update during live playback.', icon='🚜', eyebrow='SIMULATION • AUTONOMOUS MISSION')
+info_strip('Deterministic tick-based simulation  •  Play, Pause, Step and Reset  •  Battery consumption is illustrative, not hardware-calibrated')
 farm=st.session_state.get('farm',demo_farm())
 scenario=str(farm.to_dict())
 if st.session_state.get('rover_scenario')!=scenario:
@@ -91,3 +92,5 @@ if rover and result:
 else:
     st.info('Click Generate mission to begin rover simulation. Configure infected zones in the Farm Designer first.')
     st.plotly_chart(farm_figure(farm),use_container_width=True)
+
+footer()

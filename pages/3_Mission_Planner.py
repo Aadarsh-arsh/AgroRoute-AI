@@ -1,16 +1,18 @@
-"""Phase 3: obstacle-aware multi-zone mission planning and virtual rover preview."""
+"""Obstacle-aware multi-zone mission planning and virtual rover preview."""
 import streamlit as st
 import plotly.graph_objects as go
 from agroroute.farm import demo_farm
 from agroroute.mission import mission, infected_zones
 from agroroute.visualization import farm_figure
 
+from agroroute.ui import apply_theme, page_hero, info_strip, footer
 st.set_page_config(page_title='AgroRoute AI | Mission Planner',page_icon='🚜',layout='wide')
+apply_theme()
 if 'farm' not in st.session_state:
     st.session_state.farm=demo_farm()
 farm=st.session_state.farm
-st.title('🚜 Multi-Zone Mission Planner')
-st.caption('Phase 3 · Visit all infected zones · Obstacle-aware UCS distance matrix · Genetic Algorithm vs nearest-neighbor vs exact optimum')
+page_hero('Multi-Zone Mission Planner', 'Optimize the order of inspecting affected field zones. Compare Genetic Algorithm, Nearest Neighbor and exact dynamic programming.', icon='🗺️', eyebrow='ROUTE OPTIMIZATION • MISSION PLANNING')
+info_strip('Obstacles are enforced  •  All infected zones are included  •  Exact optimum is available only for supported small missions')
 zones=infected_zones(farm)
 with st.sidebar:
     st.header('Mission settings')
@@ -42,6 +44,16 @@ elif results:
     st.dataframe([{'Planner':r.algorithm,'Feasible':r.found,'Distance (cells)':r.cost,
        'Runtime (ms)':round(r.elapsed_ms,2),'Evaluations / DP states':r.evaluations,'Note':r.message} for r in results],
        use_container_width=True,hide_index=True)
+    if len(results)>1:
+        st.subheader('Planner distance comparison')
+        perf=go.Figure(go.Bar(x=[r.algorithm for r in results],
+            y=[r.cost if r.found else 0 for r in results],
+            marker_color=['#88b59b','#1a8c56','#3b7355'][:len(results)],
+            text=[f'{r.cost} steps' if r.found else 'Unavailable' for r in results],textposition='auto'))
+        perf.update_layout(height=275,margin=dict(l=10,r=10,t=15,b=30),showlegend=False,
+            yaxis=dict(title='Route distance (cells)',gridcolor='#e4efe7'),
+            xaxis=dict(title=None),paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
+        st.plotly_chart(perf,use_container_width=True)
     if available:
         selected=next((r for r in available if r.algorithm==algo),available[0])
         best_exact=next((r for r in available if r.algorithm=='Exact Dynamic Programming'),None)
@@ -59,7 +71,7 @@ elif results:
            textposition='top center',marker=dict(color='#1b63b2',size=19,line=dict(color='white',width=2))))
         st.plotly_chart(fig,use_container_width=True)
         st.progress(step/max(1,len(selected.path)-1))
-        st.caption(f'Step {step} of {len(selected.path)-1} · Rover at row {r+1}, column {c+1}. Use slider to replay; automated animation is Phase 4.')
+        st.caption(f'Step {step} of {len(selected.path)-1} · Rover at row {r+1}, column {c+1}. Use slider to preview the mission or open Virtual Rover for automated playback.')
         st.write('**Visit sequence:** '+' → '.join(f'({r+1},{c+1})' for r,c in selected.order))
         if best_exact:
             st.caption('Exact Dynamic Programming supplies a verified optimum for missions with up to 11 zones. GA is approximate; repeated runs can vary with seed.')
@@ -68,4 +80,6 @@ elif results:
 else:
     st.info(f'{len(zones)} infected zones found. Select a planner and click Plan mission.')
     st.plotly_chart(farm_figure(farm),use_container_width=True)
-    st.caption('Farm scenarios are shared with the Phase 1 designer through Streamlit session state.')
+    st.caption('Farm scenarios are shared with the Farm Designer and Smart Dashboard in this session.')
+
+footer()
