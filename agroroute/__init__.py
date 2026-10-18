@@ -1,1 +1,1 @@
-"""AgroRoute AI Phase 1 farm design package."""
+"""AgroRoute AI shared application package."""

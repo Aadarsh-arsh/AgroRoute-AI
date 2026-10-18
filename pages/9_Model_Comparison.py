@@ -3,13 +3,16 @@ from pathlib import Path
 import json
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 from agroroute.farm import demo_farm
 from agroroute.deep_learning import predict_image
 
+from agroroute.ui import apply_theme, page_hero, info_strip, footer
 st.set_page_config(page_title='AgroRoute | Model Comparison',page_icon='🧠',layout='wide')
-st.title('🧠 MobileNetV2 vs Decision Tree')
-st.caption('Train models using train_mobilenet.py in the VS Code terminal. This page reads the saved results without retraining on every reload.')
+apply_theme()
+page_hero('Model Performance Studio', 'Compare MobileNetV2 and Decision Tree on a shared held-out test split, inspect training history and assign image predictions to zones.', icon='📈', eyebrow='MODEL EVALUATION • TOMATO DISEASES')
+info_strip('Model results are loaded from saved training artifacts. Use train_mobilenet.py in the terminal to retrain.')
 folder=Path('models/mobile_net_v2')
 metadata=folder/'metadata.json'
 if not metadata.exists() or not (folder/'model.keras').exists():
@@ -20,19 +23,36 @@ st.success(f"Model loaded. Shared split: {result['split_counts']['train']} train
 c1,c2=st.columns(2)
 c1.metric('MobileNetV2 test accuracy',f"{result['mobilenet']['accuracy']:.1%}")
 c2.metric('Decision Tree test accuracy',f"{result['decision_tree']['accuracy']:.1%}")
-st.subheader('Model comparison')
+st.subheader('Model accuracy comparison')
 comparison=pd.DataFrame({'Model':['Decision Tree','MobileNetV2'],'Accuracy (%)':[100*result['decision_tree']['accuracy'],100*result['mobilenet']['accuracy']]})
-chart=px.bar(comparison,x='Model',y='Accuracy (%)',text='Accuracy (%)',color='Model',color_discrete_sequence=['#789b83','#178650'])
-chart.update_traces(texttemplate='%{text:.1f}%',textposition='outside')
-chart.update_layout(height=330,showlegend=False,margin=dict(l=10,r=10,t=15,b=10),yaxis_range=[0,100],paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
+chart=px.bar(comparison,y='Model',x='Accuracy (%)',orientation='h',text='Accuracy (%)',color='Model',color_discrete_map={'Decision Tree':'#9bb9a4','MobileNetV2':'#218a56'})
+chart.update_traces(texttemplate='%{text:.1f}%',textposition='inside',insidetextfont=dict(color='white',size=15))
+chart.update_layout(height=250,showlegend=False,margin=dict(l=12,r=25,t=20,b=25),xaxis_range=[0,100],
+  xaxis=dict(title='Held-out test accuracy (%)',gridcolor='#e5efe8',ticksuffix='%'),
+  yaxis=dict(title=None,categoryorder='array',categoryarray=['MobileNetV2','Decision Tree']),
+  paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='#ffffff',font=dict(color='#244e34',size=12),bargap=.36)
 st.plotly_chart(chart,use_container_width=True)
+st.caption('Both models were evaluated on the same held-out split. Model probability is not a calibrated confidence guarantee.')
+
 st.download_button('⬇ Download model evaluation (JSON)',json.dumps(result,indent=2),file_name='agroroute_model_evaluation.json',mime='application/json')
 for key,name in [('mobilenet','MobileNetV2'),('decision_tree','Decision Tree')]:
     with st.expander(f'{name} — Confusion matrix and classification report'):
-        st.dataframe(pd.DataFrame(result[key]['confusion'],index=result['classes'],columns=result['classes']))
-        st.dataframe(pd.DataFrame(result[key]['report']).T)
+        matrix=pd.DataFrame(result[key]['confusion'],index=result['classes'],columns=result['classes'])
+        heat=go.Figure(go.Heatmap(z=matrix.values,x=result['classes'],y=result['classes'],
+                    colorscale=[[0,'#eef7ef'],[1,'#166f45']],showscale=True,
+                    text=matrix.values,texttemplate='%{text}',textfont=dict(size=13)))
+        heat.update_layout(height=340,margin=dict(l=10,r=10,t=18,b=45),
+                    xaxis=dict(title='Predicted label'),yaxis=dict(title='True label',autorange='reversed'),
+                    paper_bgcolor='rgba(0,0,0,0)',font=dict(color='#21472f'))
+        st.plotly_chart(heat,use_container_width=True)
+        st.dataframe(pd.DataFrame(result[key]['report']).T,use_container_width=True)
+
 st.subheader('Training history')
-st.line_chart(pd.DataFrame(result['history']))
+history=pd.DataFrame(result['history'])
+history.index=history.index+1
+history.index.name='Epoch'
+st.line_chart(history)
+st.caption('Training/validation metrics are displayed per epoch; compare trends rather than only the final values.')
 st.divider()
 st.subheader('Classify an image and assign a farm zone')
 st.caption('These are experimental model outputs, not validated field diagnoses. Disease severity must be assessed separately.')
@@ -59,3 +79,5 @@ if upload:
                 st.success('Infected zone added. Open Mission Planner to calculate a route.')
     except Exception as exc:
         st.error(f'Prediction failed: {exc}')
+
+footer()

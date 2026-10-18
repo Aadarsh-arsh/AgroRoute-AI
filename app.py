@@ -1,6 +1,8 @@
 """AgroRoute AI — premium farm designer landing page."""
 import json
 import streamlit as st
+from html import escape
+from agroroute.ui import apply_theme, footer
 from agroroute.farm import Farm, demo_farm
 
 st.set_page_config(page_title='AgroRoute AI | Farm Designer', page_icon='🌱', layout='wide', initial_sidebar_state='expanded')
@@ -30,6 +32,7 @@ st.markdown('''<style>
 @media (max-width: 1200px){.hero{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width: 760px){.kpi-grid{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:flex-start}}
 </style>''', unsafe_allow_html=True)
+apply_theme()
 
 if 'farm' not in st.session_state:
     st.session_state.farm = demo_farm()
@@ -78,6 +81,7 @@ with st.sidebar:
         except (ValueError, KeyError, TypeError, UnicodeDecodeError, json.JSONDecodeError) as exc:
             st.error(f'Could not import scenario: {exc}')
 
+safe_name = escape(farm.name or 'Untitled Farm')
 counts = farm.counts()
 infected = [(r+1,c+1,farm.severities.get(f'{r},{c}','Medium')) for r in range(farm.rows)
             for c in range(farm.cols) if farm.cells[r][c]=='infected']
@@ -102,7 +106,7 @@ st.markdown(f'''
   <div class="hero-card">
     <h2>Design your field, mark infections, and build the foundation for intelligent crop missions.</h2>
     <p>Create the digital farm environment used by AgroRoute AI for pathfinding, mission planning, disease-linked zone prioritization, and rover execution.</p>
-    <span class="badge">Farm: {farm.name or 'Untitled Farm'}</span>
+    <span class="badge">Farm: {safe_name}</span>
     <span class="badge">Grid: {farm.rows} × {farm.cols}</span>
     <span class="badge">Rover Start: ({farm.rover[0]+1}, {farm.rover[1]+1})</span>
   </div>
@@ -162,3 +166,5 @@ with right:
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
+footer()

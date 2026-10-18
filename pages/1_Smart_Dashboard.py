@@ -4,6 +4,8 @@ from collections import Counter
 from dataclasses import asdict
 from datetime import datetime, timezone
 import streamlit as st
+from html import escape
+from agroroute.ui import apply_theme, footer
 import plotly.graph_objects as go
 from agroroute.farm import demo_farm
 from agroroute.dashboard import overview, prepare_mission, PLANNERS
@@ -68,6 +70,7 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
+apply_theme()
 
 farm = st.session_state.setdefault('farm', demo_farm())
 diagnoses = st.session_state.get('zone_diagnoses', {})
@@ -86,6 +89,7 @@ with st.sidebar:
 
 info = overview(farm, diagnoses, rain, threshold)
 counts = info['counts']
+safe_name = escape(farm.name)
 known_diseases = [p.disease for p in info['plans'] if p.disease != 'Unknown']
 priority_text = 'High priority attention needed' if info['high_priority'] else 'No high priority alerts'
 manual_text = f"{info['manual_review']} zone(s) need manual validation" if info['manual_review'] else 'All current zones are reviewed'
@@ -118,7 +122,7 @@ st.markdown(
         <h2>Monitor crop health, prioritize risk, and execute field missions intelligently.</h2>
         <p>AgroRoute AI combines disease detection, expert review, search algorithms, mission feasibility, and a virtual rover in one connected interface built for your AI project demonstration.</p>
         <div class="badges">
-          <span class="badge">Farm: {farm.name}</span>
+          <span class="badge">Farm: {safe_name}</span>
           <span class="badge">{info['total_zones']} Infected Zones</span>
           <span class="badge">Battery Reserve: {reserve}%</span>
           <span class="badge">Inspection Capacity: {capacity}</span>
@@ -185,10 +189,10 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('<div class="audit-grid" style="margin-bottom:1rem;">', unsafe_allow_html=True)
 audit_items = [
-    ('Functional Audit', 'OK', 'Core workflow is connected: disease detection → treatment review → mission planning → rover simulation.'),
-    ('Model Status', 'OK', 'MobileNetV2 trained and loading correctly. Decision Tree baseline also available for comparison.'),
-    ('Mission Safety', 'OK', 'Battery reserve, inspection capacity and return-to-base constraints are checked before execution.'),
-    ('Presentation Notes', 'WATCH', 'Main opportunity for improvement is UI polish and more premium visual presentation.'),
+    ('Integrated Workflow', 'OK', 'Disease detection, treatment review, mission planning and rover share the farm state.'),
+    ('Model Evaluation', 'OK', 'MobileNetV2 and Decision Tree comparison is available when saved model files are present.'),
+    ('Mission Checks', 'OK', 'Planned routes are checked for capacity, battery reserve and return-to-base constraints.'),
+    ('Field Validation', 'WATCH', 'Disease predictions and battery consumption remain experimental and uncalibrated.'),
 ]
 for title, status, desc in audit_items:
     badge = 'audit-ok' if status == 'OK' else 'audit-watch'
@@ -309,3 +313,5 @@ elif result and check:
 
 st.markdown('<div class="footer-note">AgroRoute AI is an academic software simulation. Disease prediction confidence is approximate, and treatment recommendations should be validated with trusted agricultural sources.</div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
+
+footer()
