@@ -60,10 +60,12 @@ with st.sidebar:
     cols = col_b.number_input('Columns', min_value=5, max_value=30, value=farm.cols)
     if st.button('Create blank farm', use_container_width=True):
         st.session_state.farm = Farm(rows=int(rows), cols=int(cols), name=name[:100])
+        st.session_state.zone_diagnoses = {}
         st.session_state.revision += 1
         st.rerun()
     if st.button('Load demo farm', use_container_width=True):
         st.session_state.farm = demo_farm()
+        st.session_state.zone_diagnoses = {}
         st.session_state.revision += 1
         st.rerun()
     st.divider()
@@ -76,6 +78,7 @@ with st.sidebar:
         try:
             imported = Farm.from_dict(json.loads(uploaded.getvalue().decode('utf-8')))
             st.session_state.farm = imported
+            st.session_state.zone_diagnoses = {}
             st.session_state.revision += 1
             st.rerun()
         except (ValueError, KeyError, TypeError, UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -145,6 +148,8 @@ with left:
             if cells[c].button(symbol, key=f'cell_{st.session_state.revision}_{r}_{c}', help=f'Row {r+1}, column {c+1} | {kind}', use_container_width=True):
                 try:
                     farm.paint(r,c,tool,severity)
+                    if tool != 'rover':
+                        st.session_state.setdefault('zone_diagnoses', {}).pop(farm.key(r,c), None)
                     st.session_state.revision += 1
                     st.rerun()
                 except ValueError as exc:

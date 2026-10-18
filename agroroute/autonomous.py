@@ -20,7 +20,9 @@ class WorkflowResult:
     route: Any
     preflight: Any
     fingerprint: str
-
+    battery_per_step: float
+    capacity: int
+    reserve: float
     @property
     def ready(self) -> bool:
         return bool(self.route.found and self.preflight and self.preflight.feasible)
@@ -81,15 +83,20 @@ def build_workflow(farm: Farm, diagnoses: dict | None = None, *,
     details = overview(working, updated, rain, confidence_threshold)
     route, check = prepare_mission(working, planner, battery_per_step, capacity, reserve)
     return WorkflowResult(working, updated, label, probability, zone, details, route, check,
-                          image_fingerprint(image_bytes) if image_bytes is not None else "")
+                          image_fingerprint(image_bytes) if image_bytes is not None else "",
+                          float(battery_per_step), int(capacity), float(reserve))
 
 def start_rover(result: WorkflowResult, capacity: int) -> RoverState:
     if not result.ready:
         raise ValueError("Mission failed preflight and cannot be started.")
+    if capacity != result.capacity:
+        raise ValueError("Inspection capacity changed after mission preflight.")
     return RoverState(list(result.route.path), capacity=capacity)
 
 def simulate_to_completion(result: WorkflowResult, battery_per_step: float,
                            capacity: int) -> RoverState:
+    if battery_per_step != result.battery_per_step:
+        raise ValueError("Battery consumption changed after mission preflight.")
     rover = start_rover(result, capacity)
     while rover.status not in ("Completed", "Blocked", "Battery depleted", "Invalid route",
                                "Inspection capacity reached", "No route"):
@@ -107,6 +114,9 @@ def workflow_report(result: WorkflowResult, rover: RoverState | None = None) -> 
         "planner": result.route.algorithm,
         "route_found": result.route.found,
         "preflight_passed": result.ready,
+        "battery_consumption_per_step_pct": result.battery_per_step,
+        "required_reserve_pct": result.reserve,
+        "inspection_capacity": result.capacity,
         "preflight_issues": list(result.preflight.issues) if result.preflight else [result.route.message],
         "route_steps": len(result.route.path)-1 if result.route.found else None,
         "route": [[r+1,c+1] for r,c in result.route.path],

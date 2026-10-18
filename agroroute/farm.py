@@ -1,6 +1,7 @@
 """Validated, portable farm scenario model."""
 from __future__ import annotations
 from dataclasses import dataclass, field
+from copy import deepcopy
 from typing import Any
 
 CELL_TYPES = ('empty', 'crop', 'obstacle', 'infected')
@@ -85,8 +86,8 @@ class Farm:
         rover = data['rover']
         if not isinstance(rover, list) or len(rover) != 2 or any(type(x) is not int for x in rover):
             raise ValueError('Invalid rover coordinates.')
-        return cls(rows=data['rows'], cols=data['cols'], cells=data['cells'],
-                   rover=tuple(rover), severities=data.get('severities', {}), name=str(data.get('name', 'Imported Farm'))[:100])
+        return cls(rows=data['rows'], cols=data['cols'], cells=deepcopy(data['cells']),
+                   rover=tuple(rover), severities=deepcopy(data.get('severities', {})), name=str(data.get('name', 'Imported Farm'))[:100])
 
 
 def demo_farm() -> Farm:
