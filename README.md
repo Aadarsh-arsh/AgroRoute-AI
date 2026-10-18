@@ -54,3 +54,36 @@ git push origin main
 ```
 
 Repository: https://github.com/Aadarsh-arsh/AgroRoute-AI
+
+## Phase 3: Multi-zone mission planner
+
+The new **Mission Planner** page plans visits to **all infected zones**, optionally returning to base.
+
+- **Nearest Neighbor:** deterministic fast baseline.
+- **Genetic Algorithm:** seeded evolutionary optimization (population, generations, mutation, order crossover).
+- **Exact Dynamic Programming:** Held–Karp-style optimal multi-zone solver for **up to 11 infected zones**.
+- Each pair of points uses **UCS on the real farm grid**, so obstacles are respected.
+- Compare total route length, execution time, and GA/greedy optimality gap against exact results.
+- A movement-step slider previews the virtual rover on the computed route; full animation is planned for Phase 4.
+
+### Update your existing Windows checkout
+
+Extract the ZIP, then copy the files **inside** the extracted `AgroRoute_AI` directory into `D:\AgroRoute_AI`, preserving `.git` and `.venv`. Run:
+
+```powershell
+cd D:\AgroRoute_AI
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe -m streamlit run app.py
+```
+
+After checking the new **Mission Planner** page, commit and push:
+
+```powershell
+git status
+git add .
+git commit -m "feat: add phase 3 genetic algorithm multi-zone mission planner"
+git push origin main
+```
+
+**Scope note:** This is Phase 3, not the complete eight-phase system. Disease detection, expert reasoning, scheduling and full rover animation remain separate milestones.
