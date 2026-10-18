@@ -78,12 +78,12 @@ class TestFinalAudit(unittest.TestCase):
     def test_navigation_transfers_safety_settings(self):
         for filename in ('1_Smart_Dashboard.py','11_Autonomous_Workflow.py'):
             with self.subTest(filename=filename):
-                text=(ROOT/'pages'/filename).read_text()
+                text=(ROOT/'pages'/filename).read_text(encoding='utf-8')
                 self.assertIn('rover_transfer_settings',text)
                 self.assertIn('rover_mission_settings',text)
 
     def test_stale_diagnoses_reset_on_farm_replacement(self):
-        source=(ROOT/'app.py').read_text()
+        source=(ROOT/'app.py').read_text(encoding='utf-8')
         self.assertGreaterEqual(source.count('st.session_state.zone_diagnoses = {}'),3)
         self.assertIn(".pop(farm.key(r,c), None)",source)
 

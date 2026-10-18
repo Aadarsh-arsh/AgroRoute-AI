@@ -1,0 +1,253 @@
+scenario,goal_row,goal_col,algorithm,trial,elapsed_ms
+demo,3,3,A*,1,0.022244
+demo,3,3,A*,2,0.018278
+demo,3,3,A*,3,0.015794
+demo,3,3,A*,4,0.015814
+demo,3,3,A*,5,0.015433
+demo,3,3,A*,6,0.015954
+demo,3,3,A*,7,0.015664
+demo,3,3,UCS,1,0.022785
+demo,3,3,UCS,2,0.020732
+demo,3,3,UCS,3,0.019339
+demo,3,3,UCS,4,0.019369
+demo,3,3,UCS,5,0.019389
+demo,3,3,UCS,6,0.01934
+demo,3,3,UCS,7,0.018929
+demo,3,3,Greedy Best-First,1,0.011397
+demo,3,3,Greedy Best-First,2,0.009415
+demo,3,3,Greedy Best-First,3,0.008783
+demo,3,3,Greedy Best-First,4,0.008363
+demo,3,3,Greedy Best-First,5,0.031928
+demo,3,3,Greedy Best-First,6,0.008793
+demo,3,3,Greedy Best-First,7,0.008593
+demo,3,10,A*,1,0.055743
+demo,3,10,A*,2,0.05321
+demo,3,10,A*,3,0.052149
+demo,3,10,A*,4,0.051788
+demo,3,10,A*,5,0.052269
+demo,3,10,A*,6,0.067151
+demo,3,10,A*,7,0.052079
+demo,3,10,UCS,1,0.103015
+demo,3,10,UCS,2,0.110036
+demo,3,10,UCS,3,0.213291
+demo,3,10,UCS,4,0.102204
+demo,3,10,UCS,5,0.100301
+demo,3,10,UCS,6,0.100301
+demo,3,10,UCS,7,0.099399
+demo,3,10,Greedy Best-First,1,0.024697
+demo,3,10,Greedy Best-First,2,0.028162
+demo,3,10,Greedy Best-First,3,0.022915
+demo,3,10,Greedy Best-First,4,0.021492
+demo,3,10,Greedy Best-First,5,0.021913
+demo,3,10,Greedy Best-First,6,0.022404
+demo,3,10,Greedy Best-First,7,0.021943
+demo,9,10,A*,1,0.146951
+demo,9,10,A*,2,0.143356
+demo,9,10,A*,3,0.142294
+demo,9,10,A*,4,0.140481
+demo,9,10,A*,5,0.154622
+demo,9,10,A*,6,0.200792
+demo,9,10,A*,7,0.144167
+demo,9,10,UCS,1,0.180993
+demo,9,10,UCS,2,0.178708
+demo,9,10,UCS,3,0.215944
+demo,9,10,UCS,4,0.178919
+demo,9,10,UCS,5,0.177376
+demo,9,10,UCS,6,0.201854
+demo,9,10,UCS,7,0.339901
+demo,9,10,Greedy Best-First,1,0.044086
+demo,9,10,Greedy Best-First,2,0.039149
+demo,9,10,Greedy Best-First,3,0.037987
+demo,9,10,Greedy Best-First,4,0.037497
+demo,9,10,Greedy Best-First,5,0.036775
+demo,9,10,Greedy Best-First,6,0.035784
+demo,9,10,Greedy Best-First,7,0.037206
+demo,11,5,A*,1,0.091878
+demo,11,5,A*,2,0.089074
+demo,11,5,A*,3,0.087902
+demo,11,5,A*,4,0.089845
+demo,11,5,A*,5,0.08681
+demo,11,5,A*,6,0.122244
+demo,11,5,A*,7,0.090887
+demo,11,5,UCS,1,0.151748
+demo,11,5,UCS,2,0.150476
+demo,11,5,UCS,3,0.148654
+demo,11,5,UCS,4,0.154522
+demo,11,5,UCS,5,0.420362
+demo,11,5,UCS,6,0.156185
+demo,11,5,UCS,7,0.151527
+demo,11,5,Greedy Best-First,1,0.034582
+demo,11,5,Greedy Best-First,2,0.031297
+demo,11,5,Greedy Best-First,3,0.030316
+demo,11,5,Greedy Best-First,4,0.029574
+demo,11,5,Greedy Best-First,5,0.030346
+demo,11,5,Greedy Best-First,6,0.030225
+demo,11,5,Greedy Best-First,7,0.029545
+open,3,3,A*,1,0.049444
+open,3,3,A*,2,0.017817
+open,3,3,A*,3,0.016325
+open,3,3,A*,4,0.015503
+open,3,3,A*,5,0.015013
+open,3,3,A*,6,0.014982
+open,3,3,A*,7,0.014662
+open,3,3,UCS,1,0.021712
+open,3,3,UCS,2,0.01998
+open,3,3,UCS,3,0.019209
+open,3,3,UCS,4,0.019509
+open,3,3,UCS,5,0.019249
+open,3,3,UCS,6,0.01983
+open,3,3,UCS,7,0.019689
+open,3,3,Greedy Best-First,1,0.010255
+open,3,3,Greedy Best-First,2,0.009164
+open,3,3,Greedy Best-First,3,0.008723
+open,3,3,Greedy Best-First,4,0.008102
+open,3,3,Greedy Best-First,5,0.008733
+open,3,3,Greedy Best-First,6,0.008283
+open,3,3,Greedy Best-First,7,0.008263
+open,3,10,A*,1,0.056394
+open,3,10,A*,2,0.0534
+open,3,10,A*,3,0.05351
+open,3,10,A*,4,0.05382
+open,3,10,A*,5,0.051547
+open,3,10,A*,6,0.05318
+open,3,10,A*,7,0.14051
+open,3,10,UCS,1,0.137566
+open,3,10,UCS,2,0.168512
+open,3,10,UCS,3,0.112918
+open,3,10,UCS,4,0.109033
+open,3,10,UCS,5,0.107561
+open,3,10,UCS,6,0.137425
+open,3,10,UCS,7,0.171206
+open,3,10,Greedy Best-First,1,0.026049
+open,3,10,Greedy Best-First,2,0.023926
+open,3,10,Greedy Best-First,3,0.022604
+open,3,10,Greedy Best-First,4,0.022494
+open,3,10,Greedy Best-First,5,0.022293
+open,3,10,Greedy Best-First,6,0.021582
+open,3,10,Greedy Best-First,7,0.021973
+open,9,10,A*,1,0.160259
+open,9,10,A*,2,0.184816
+open,9,10,A*,3,0.15447
+open,9,10,A*,4,0.151757
+open,9,10,A*,5,0.225597
+open,9,10,A*,6,0.210885
+open,9,10,A*,7,0.187941
+open,9,10,UCS,1,0.195613
+open,9,10,UCS,2,0.197906
+open,9,10,UCS,3,0.218536
+open,9,10,UCS,4,0.195242
+open,9,10,UCS,5,0.269102
+open,9,10,UCS,6,0.195002
+open,9,10,UCS,7,0.487859
+open,9,10,Greedy Best-First,1,0.042684
+open,9,10,Greedy Best-First,2,0.038317
+open,9,10,Greedy Best-First,3,0.067
+open,9,10,Greedy Best-First,4,0.038448
+open,9,10,Greedy Best-First,5,0.037736
+open,9,10,Greedy Best-First,6,0.037456
+open,9,10,Greedy Best-First,7,0.038578
+open,11,5,A*,1,0.096744
+open,11,5,A*,2,0.094982
+open,11,5,A*,3,0.092478
+open,11,5,A*,4,0.09347
+open,11,5,A*,5,0.093249
+open,11,5,A*,6,0.092248
+open,11,5,A*,7,0.10703
+open,11,5,UCS,1,0.166799
+open,11,5,UCS,2,0.225527
+open,11,5,UCS,3,0.165517
+open,11,5,UCS,4,0.16106
+open,11,5,UCS,5,0.161922
+open,11,5,UCS,6,0.189584
+open,11,5,UCS,7,0.16085
+open,11,5,Greedy Best-First,1,0.035643
+open,11,5,Greedy Best-First,2,0.03328
+open,11,5,Greedy Best-First,3,0.032278
+open,11,5,Greedy Best-First,4,0.031928
+open,11,5,Greedy Best-First,5,0.054882
+open,11,5,Greedy Best-First,6,0.032478
+open,11,5,Greedy Best-First,7,0.032208
+barrier,2,4,A*,1,0.015704
+barrier,2,4,A*,2,0.013811
+barrier,2,4,A*,3,0.01347
+barrier,2,4,A*,4,0.01296
+barrier,2,4,A*,5,0.012829
+barrier,2,4,A*,6,0.01335
+barrier,2,4,A*,7,0.012559
+barrier,2,4,UCS,1,0.018207
+barrier,2,4,UCS,2,0.017586
+barrier,2,4,UCS,3,0.016876
+barrier,2,4,UCS,4,0.038568
+barrier,2,4,UCS,5,0.017586
+barrier,2,4,UCS,6,0.017937
+barrier,2,4,UCS,7,0.017767
+barrier,2,4,Greedy Best-First,1,0.009484
+barrier,2,4,Greedy Best-First,2,0.008633
+barrier,2,4,Greedy Best-First,3,0.008253
+barrier,2,4,Greedy Best-First,4,0.007692
+barrier,2,4,Greedy Best-First,5,0.008152
+barrier,2,4,Greedy Best-First,6,0.008492
+barrier,2,4,Greedy Best-First,7,0.008092
+barrier,4,10,A*,1,0.092979
+barrier,4,10,A*,2,0.091016
+barrier,4,10,A*,3,0.089053
+barrier,4,10,A*,4,0.089283
+barrier,4,10,A*,5,0.090185
+barrier,4,10,A*,6,0.090846
+barrier,4,10,A*,7,0.089664
+barrier,4,10,UCS,1,0.162122
+barrier,4,10,UCS,2,0.158837
+barrier,4,10,UCS,3,0.159579
+barrier,4,10,UCS,4,0.163595
+barrier,4,10,UCS,5,0.16065
+barrier,4,10,UCS,6,0.1809
+barrier,4,10,UCS,7,0.159798
+barrier,4,10,Greedy Best-First,1,0.051347
+barrier,4,10,Greedy Best-First,2,0.048853
+barrier,4,10,Greedy Best-First,3,0.047742
+barrier,4,10,Greedy Best-First,4,0.045979
+barrier,4,10,Greedy Best-First,5,0.048342
+barrier,4,10,Greedy Best-First,6,0.045578
+barrier,4,10,Greedy Best-First,7,0.046991
+barrier,9,9,A*,1,0.09333
+barrier,9,9,A*,2,0.091927
+barrier,9,9,A*,3,0.091727
+barrier,9,9,A*,4,0.106669
+barrier,9,9,A*,5,0.091046
+barrier,9,9,A*,6,0.091617
+barrier,9,9,A*,7,0.091086
+barrier,9,9,UCS,1,0.129924
+barrier,9,9,UCS,2,0.148602
+barrier,9,9,UCS,3,0.128883
+barrier,9,9,UCS,4,0.1276
+barrier,9,9,UCS,5,0.141842
+barrier,9,9,UCS,6,0.131276
+barrier,9,9,UCS,7,0.129663
+barrier,9,9,Greedy Best-First,1,0.036815
+barrier,9,9,Greedy Best-First,2,0.035012
+barrier,9,9,Greedy Best-First,3,0.033941
+barrier,9,9,Greedy Best-First,4,0.03356
+barrier,9,9,Greedy Best-First,5,0.033771
+barrier,9,9,Greedy Best-First,6,0.03356
+barrier,9,9,Greedy Best-First,7,0.032489
+barrier,11,3,A*,1,0.0602
+barrier,11,3,A*,2,0.057856
+barrier,11,3,A*,3,0.058206
+barrier,11,3,A*,4,0.058467
+barrier,11,3,A*,5,0.079238
+barrier,11,3,A*,6,0.058698
+barrier,11,3,A*,7,0.057375
+barrier,11,3,UCS,1,0.083375
+barrier,11,3,UCS,2,0.082043
+barrier,11,3,UCS,3,0.084156
+barrier,11,3,UCS,4,0.081002
+barrier,11,3,UCS,5,0.08054
+barrier,11,3,UCS,6,0.081091
+barrier,11,3,UCS,7,0.080561
+barrier,11,3,Greedy Best-First,1,0.030596
+barrier,11,3,Greedy Best-First,2,0.029424
+barrier,11,3,Greedy Best-First,3,0.029123
+barrier,11,3,Greedy Best-First,4,0.028894
+barrier,11,3,Greedy Best-First,5,0.028883
+barrier,11,3,Greedy Best-First,6,0.028593
+barrier,11,3,Greedy Best-First,7,0.028312

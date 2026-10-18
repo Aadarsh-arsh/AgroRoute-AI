@@ -1,0 +1,64 @@
+scenario,algorithm,trial,elapsed_ms
+demo,Nearest Neighbor,1,1.312213
+demo,Nearest Neighbor,2,1.670151
+demo,Nearest Neighbor,3,1.379544
+demo,Nearest Neighbor,4,1.705534
+demo,Nearest Neighbor,5,1.637152
+demo,Nearest Neighbor,6,1.375738
+demo,Nearest Neighbor,7,1.279995
+demo,Genetic Algorithm,1,237.395221
+demo,Genetic Algorithm,2,227.978722
+demo,Genetic Algorithm,3,258.553345
+demo,Genetic Algorithm,4,221.895946
+demo,Genetic Algorithm,5,226.950997
+demo,Genetic Algorithm,6,219.895641
+demo,Genetic Algorithm,7,219.49328
+demo,Exact Dynamic Programming,1,1.537457
+demo,Exact Dynamic Programming,2,1.412591
+demo,Exact Dynamic Programming,3,1.673751
+demo,Exact Dynamic Programming,4,1.477118
+demo,Exact Dynamic Programming,5,1.716715
+demo,Exact Dynamic Programming,6,2.042462
+demo,Exact Dynamic Programming,7,1.596266
+open,Nearest Neighbor,1,1.423067
+open,Nearest Neighbor,2,1.40506
+open,Nearest Neighbor,3,1.428555
+open,Nearest Neighbor,4,1.359832
+open,Nearest Neighbor,5,1.430658
+open,Nearest Neighbor,6,1.361215
+open,Nearest Neighbor,7,1.38496
+open,Genetic Algorithm,1,220.977233
+open,Genetic Algorithm,2,212.481567
+open,Genetic Algorithm,3,213.174372
+open,Genetic Algorithm,4,211.417256
+open,Genetic Algorithm,5,213.296786
+open,Genetic Algorithm,6,218.407974
+open,Genetic Algorithm,7,212.632613
+open,Exact Dynamic Programming,1,1.529256
+open,Exact Dynamic Programming,2,1.464679
+open,Exact Dynamic Programming,3,1.413542
+open,Exact Dynamic Programming,4,1.441024
+open,Exact Dynamic Programming,5,1.451859
+open,Exact Dynamic Programming,6,1.420032
+open,Exact Dynamic Programming,7,1.43159
+barrier,Nearest Neighbor,1,1.349827
+barrier,Nearest Neighbor,2,1.286813
+barrier,Nearest Neighbor,3,1.279673
+barrier,Nearest Neighbor,4,1.247845
+barrier,Nearest Neighbor,5,1.250809
+barrier,Nearest Neighbor,6,1.241465
+barrier,Nearest Neighbor,7,1.267374
+barrier,Genetic Algorithm,1,210.24217
+barrier,Genetic Algorithm,2,210.979633
+barrier,Genetic Algorithm,3,229.303866
+barrier,Genetic Algorithm,4,231.269098
+barrier,Genetic Algorithm,5,239.104121
+barrier,Genetic Algorithm,6,242.087814
+barrier,Genetic Algorithm,7,225.104025
+barrier,Exact Dynamic Programming,1,1.731552
+barrier,Exact Dynamic Programming,2,1.532753
+barrier,Exact Dynamic Programming,3,1.444962
+barrier,Exact Dynamic Programming,4,1.309818
+barrier,Exact Dynamic Programming,5,1.320775
+barrier,Exact Dynamic Programming,6,1.839194
+barrier,Exact Dynamic Programming,7,1.290028

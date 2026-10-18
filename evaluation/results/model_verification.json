@@ -1,0 +1,6 @@
+{
+  "metadata_present": false,
+  "model_file_present": false,
+  "dataset_present": false,
+  "verification": "not possible without original metadata/model and held-out dataset"
+}
