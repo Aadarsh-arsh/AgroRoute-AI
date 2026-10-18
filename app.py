@@ -1,14 +1,34 @@
-"""AgroRoute AI — Phase 1 interactive farm designer."""
+"""AgroRoute AI — premium farm designer landing page."""
 import json
 import streamlit as st
 from agroroute.farm import Farm, demo_farm
 
 st.set_page_config(page_title='AgroRoute AI | Farm Designer', page_icon='🌱', layout='wide', initial_sidebar_state='expanded')
 st.markdown('''<style>
-.block-container {padding-top:1.4rem;max-width:1450px}
-.hero {padding:1.4rem 1.7rem;border-radius:18px;background:linear-gradient(110deg,#123b2b,#207b50);color:white;margin-bottom:1.2rem}
-.hero h1 {margin:0;color:white;font-size:2.1rem}.hero p {margin:.4rem 0 0;color:#e0f6e9}
-.cell-legend {display:inline-block;padding:6px 11px;border-radius:8px;margin:3px;background:#edf4ed;color:#173e2a;font-size:13px}
+.block-container{padding-top:1.1rem;max-width:1500px;padding-bottom:2rem}
+[data-testid="stSidebar"]{background:linear-gradient(180deg,#0f221b,#132a21)}
+[data-testid="stSidebar"] *{color:#eef7f0 !important}
+.main-shell{background:linear-gradient(180deg,#f3f8f4 0%,#edf4ef 100%);padding:1.2rem;border-radius:28px;border:1px solid rgba(18,75,45,.08);box-shadow:0 20px 40px rgba(15,35,25,.08)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;background:#fff;border:1px solid rgba(17,68,43,.08);box-shadow:0 10px 24px rgba(12,28,18,.06);padding:.95rem 1rem;border-radius:22px;margin-bottom:1rem}
+.brand{display:flex;align-items:center;gap:.9rem}.brand .logo{width:50px;height:50px;border-radius:16px;background:linear-gradient(145deg,#116a42,#2fb56f);display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 10px 18px rgba(24,129,78,.25)}
+.brand h1{margin:0;font-size:1.8rem;color:#113923;font-weight:800}.brand p{margin:.15rem 0 0;color:#6a8675}
+.hero{display:grid;grid-template-columns:1.5fr .95fr;gap:1rem;margin-bottom:1rem}
+.hero-card{padding:1.35rem 1.5rem;border-radius:28px;background:linear-gradient(135deg,#13462f 0%,#1a8d57 58%,#31be74 100%);box-shadow:0 18px 40px rgba(24,102,64,.25);color:#fff}
+.hero-card h2{margin:0;color:#fff;font-size:2rem}.hero-card p{margin:.65rem 0 0;color:#e4f7ea;line-height:1.55}
+.hero-panel{padding:1.2rem;border-radius:28px;background:#fff;border:1px solid rgba(17,68,43,.08);box-shadow:0 10px 24px rgba(12,28,18,.06)}
+.badge{display:inline-block;padding:.45rem .8rem;border-radius:999px;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.2);margin:.65rem .4rem 0 0;font-size:.86rem;font-weight:700}
+.badge-light{display:inline-block;padding:.48rem .8rem;border-radius:999px;background:#f1f7f3;border:1px solid rgba(17,68,43,.1);color:#18472d;font-size:.86rem;font-weight:700;margin:0 .4rem .5rem 0}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin:1rem 0 1.2rem}
+.kpi-card{background:#fff;border:1px solid rgba(17,68,43,.08);border-radius:24px;padding:1rem 1.05rem;box-shadow:0 10px 24px rgba(12,28,18,.06)}
+.kpi-card.primary{background:linear-gradient(135deg,#155437 0%,#1d8d57 100%);color:#fff}
+.kpi-label{font-size:.88rem;color:#6d8776;font-weight:700}.kpi-card.primary .kpi-label{color:#def3e6}
+.kpi-value{font-size:2rem;color:#143c26;font-weight:800;margin:.45rem 0 .2rem}.kpi-card.primary .kpi-value{color:#fff}
+.kpi-note{font-size:.88rem;color:#7d9686}.kpi-card.primary .kpi-note{color:#d9f0e0}
+.section-card{background:#fff;border:1px solid rgba(17,68,43,.08);border-radius:28px;padding:1.15rem;box-shadow:0 10px 24px rgba(12,28,18,.06);height:100%}
+.legend-chip{display:inline-block;padding:7px 11px;border-radius:999px;margin:4px;background:#f1f7f3;color:#173e2a;font-size:13px;border:1px solid rgba(17,68,43,.08)}
+.status-good{display:inline-block;padding:.32rem .62rem;border-radius:999px;background:#e1f7ea;color:#117342;font-weight:700;font-size:.8rem}
+@media (max-width: 1200px){.hero{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width: 760px){.kpi-grid{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:flex-start}}
 </style>''', unsafe_allow_html=True)
 
 if 'farm' not in st.session_state:
@@ -19,7 +39,6 @@ if 'message' not in st.session_state:
     st.session_state.message = ''
 
 farm: Farm = st.session_state.farm
-st.markdown('<div class="hero"><h1>🌱 AgroRoute AI</h1><p>Intelligent Crop Monitoring · Search Algorithms · Autonomous Rover Simulation</p></div>', unsafe_allow_html=True)
 
 with st.sidebar:
     st.header('🛠️ Farm tools')
@@ -49,7 +68,7 @@ with st.sidebar:
     payload = json.dumps(farm.to_dict(), indent=2)
     st.download_button('⬇️ Download farm JSON', data=payload, file_name='agroroute_farm.json',
                        mime='application/json', use_container_width=True)
-    uploaded = st.file_uploader('Import scenario JSON', type=['json'], max_upload_size=2)
+    uploaded = st.file_uploader('Import scenario JSON', type=['json'])
     if uploaded is not None and st.button('Import uploaded farm', use_container_width=True):
         try:
             imported = Farm.from_dict(json.loads(uploaded.getvalue().decode('utf-8')))
@@ -60,44 +79,86 @@ with st.sidebar:
             st.error(f'Could not import scenario: {exc}')
 
 counts = farm.counts()
-c1,c2,c3,c4,c5 = st.columns(5)
-c1.metric('Farm cells', farm.rows * farm.cols)
-c2.metric('Healthy crops', counts['crop'])
-c3.metric('Infected zones', counts['infected'])
-c4.metric('Obstacles', counts['obstacle'])
-c5.metric('Rover start', f'({farm.rover[0]+1}, {farm.rover[1]+1})')
+infected = [(r+1,c+1,farm.severities.get(f'{r},{c}','Medium')) for r in range(farm.rows)
+            for c in range(farm.cols) if farm.cells[r][c]=='infected']
 
-left, right = st.columns([3.2, 1], gap='large')
+st.markdown('<div class="main-shell">', unsafe_allow_html=True)
+st.markdown(f'''
+<div class="topbar">
+  <div class="brand">
+    <div class="logo">🌱</div>
+    <div>
+      <h1>AgroRoute AI</h1>
+      <p>Farm Designer · Search Algorithms · Disease Detection · Autonomous Rover Simulation</p>
+    </div>
+  </div>
+  <div>
+    <span class="badge-light">🧠 AI Project Ready</span>
+    <span class="badge-light">🤖 Rover Workflow Connected</span>
+    <span class="badge-light">🗂️ Editable Scenario</span>
+  </div>
+</div>
+<div class="hero">
+  <div class="hero-card">
+    <h2>Design your field, mark infections, and build the foundation for intelligent crop missions.</h2>
+    <p>Create the digital farm environment used by AgroRoute AI for pathfinding, mission planning, disease-linked zone prioritization, and rover execution.</p>
+    <span class="badge">Farm: {farm.name or 'Untitled Farm'}</span>
+    <span class="badge">Grid: {farm.rows} × {farm.cols}</span>
+    <span class="badge">Rover Start: ({farm.rover[0]+1}, {farm.rover[1]+1})</span>
+  </div>
+  <div class="hero-panel">
+    <div style="font-size:1.05rem;font-weight:800;color:#133d26;margin-bottom:.7rem;">Editor Status</div>
+    <div class="status-good">Operational</div>
+    <p style="color:#6f8978;line-height:1.55;margin-top:.8rem;">Use this page to define the map that powers the mission planner, disease-priority dashboard, and virtual rover simulation.</p>
+    <span class="badge-light">✅ JSON export/import</span>
+    <span class="badge-light">✅ Severity tagging</span>
+    <span class="badge-light">✅ Demo farm support</span>
+  </div>
+</div>
+''', unsafe_allow_html=True)
+
+st.markdown(f'''
+<div class="kpi-grid">
+  <div class="kpi-card primary"><div class="kpi-label">Farm Cells</div><div class="kpi-value">{farm.rows * farm.cols}</div><div class="kpi-note">Total working grid size</div></div>
+  <div class="kpi-card"><div class="kpi-label">Healthy Crops</div><div class="kpi-value">{counts['crop']}</div><div class="kpi-note">Current healthy crop cells</div></div>
+  <div class="kpi-card"><div class="kpi-label">Infected Zones</div><div class="kpi-value">{counts['infected']}</div><div class="kpi-note">Priority inspection points</div></div>
+  <div class="kpi-card"><div class="kpi-label">Obstacles</div><div class="kpi-value">{counts['obstacle']}</div><div class="kpi-note">Route-blocking cells</div></div>
+  <div class="kpi-card"><div class="kpi-label">Rover Start</div><div class="kpi-value">({farm.rover[0]+1},{farm.rover[1]+1})</div><div class="kpi-note">Initial simulation position</div></div>
+</div>
+''', unsafe_allow_html=True)
+
+left, right = st.columns([3.15, 1.15], gap='large')
 with left:
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader(f'🗺️ {farm.name or "Untitled Farm"}')
     st.caption('Click a cell to apply the selected tool. Coordinates are 1-based in the interface.')
-    # Native Streamlit buttons provide reliable click handling without custom JavaScript.
-    # A keyed grid is rebuilt after every edit to prevent stale button state.
     for r in range(farm.rows):
         cells = st.columns(farm.cols, gap='small')
         for c in range(farm.cols):
             kind = farm.cells[r][c]
             symbol = ('🤖' if farm.rover == (r,c) else
                       {'crop':'🌿','empty':'·','obstacle':'🪨','infected':{'Low':'🟡','Medium':'🟠','High':'🔴'}[farm.severities.get(f'{r},{c}','Medium')]}[kind])
-            if cells[c].button(symbol, key=f'cell_{st.session_state.revision}_{r}_{c}',
-                               help=f'Row {r+1}, column {c+1} | {kind}', use_container_width=True):
+            if cells[c].button(symbol, key=f'cell_{st.session_state.revision}_{r}_{c}', help=f'Row {r+1}, column {c+1} | {kind}', use_container_width=True):
                 try:
                     farm.paint(r,c,tool,severity)
                     st.session_state.revision += 1
                     st.rerun()
                 except ValueError as exc:
                     st.warning(str(exc))
-    st.markdown('<span class="cell-legend">🤖 Rover</span><span class="cell-legend">🌿 Crop</span><span class="cell-legend">· Empty</span><span class="cell-legend">🪨 Obstacle</span><span class="cell-legend">🟡 Low</span><span class="cell-legend">🟠 Medium</span><span class="cell-legend">🔴 High</span>', unsafe_allow_html=True)
+    st.markdown('<span class="legend-chip">🤖 Rover</span><span class="legend-chip">🌿 Crop</span><span class="legend-chip">· Empty</span><span class="legend-chip">🪨 Obstacle</span><span class="legend-chip">🟡 Low</span><span class="legend-chip">🟠 Medium</span><span class="legend-chip">🔴 High</span>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 with right:
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader('📍 Zone details')
-    infected = [(r+1,c+1,farm.severities.get(f'{r},{c}','Medium')) for r in range(farm.rows)
-                for c in range(farm.cols) if farm.cells[r][c]=='infected']
     if infected:
         st.dataframe([{'Row':r,'Column':c,'Severity':s} for r,c,s in infected], hide_index=True, use_container_width=True)
     else:
         st.info('No infected zones yet. Choose Infected zone and click a cell.')
     st.subheader('🧭 Project status')
     st.success('Farm editor is operational')
-    st.write('**Now available:** use the **Algorithm Lab** page in the navigation sidebar to run A*, UCS and Greedy Best-First.')
-    st.caption('Use Smart Dashboard for a guided workflow, or choose individual pages from the navigation sidebar.')
-    st.page_link('pages/1_Smart_Dashboard.py',label='🌱 Open Smart Agriculture Dashboard',use_container_width=True)
+    st.write('**Recommended next step:** continue into the premium **Smart Dashboard** for a guided AI workflow.')
+    st.page_link('pages/1_Smart_Dashboard.py', label='🌱 Open Smart Dashboard', use_container_width=True)
+    st.page_link('pages/3_Mission_Planner.py', label='🧭 Open Mission Planner', use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
