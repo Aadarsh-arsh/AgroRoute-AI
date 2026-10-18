@@ -1,0 +1,10 @@
+scenario,algorithm,zones,found,round_trip_steps,exact_optimal_steps,gap_steps,gap_pct,evaluations,median_ms,min_ms,max_ms,returned_to_base,all_zones_visited
+demo,Nearest Neighbor,4,True,38,38,0,0.0,4,1.37954,1.28,1.70553,True,True
+demo,Genetic Algorithm,4,True,38,38,0,0.0,14480,226.951,219.49328,258.55335,True,True
+demo,Exact Dynamic Programming,4,True,38,38,0,0.0,33,1.59627,1.41259,2.04246,True,True
+open,Nearest Neighbor,4,True,38,38,0,0.0,4,1.40506,1.35983,1.43066,True,True
+open,Genetic Algorithm,4,True,38,38,0,0.0,14480,213.17437,211.41726,220.97723,True,True
+open,Exact Dynamic Programming,4,True,38,38,0,0.0,33,1.44102,1.41354,1.52926,True,True
+barrier,Nearest Neighbor,4,True,48,46,2,4.35,4,1.26737,1.24147,1.34983,True,True
+barrier,Genetic Algorithm,4,True,46,46,0,0.0,14480,229.30387,210.24217,242.08781,True,True
+barrier,Exact Dynamic Programming,4,True,46,46,0,0.0,33,1.44496,1.29003,1.83919,True,True

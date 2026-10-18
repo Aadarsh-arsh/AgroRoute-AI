@@ -1,0 +1,1 @@
+Run from project root: `python -m evaluation.benchmark`. Results are written to `evaluation/results/`. Run tests: `python -m unittest discover -s tests -v`. See `results/ACADEMIC_EVALUATION_REPORT.md` for academic interpretation and limitations.

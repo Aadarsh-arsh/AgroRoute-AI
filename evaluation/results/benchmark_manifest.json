@@ -1,0 +1,22 @@
+{
+  "repeats": 7,
+  "farm_scenarios": [
+    "demo",
+    "open",
+    "barrier"
+  ],
+  "pathfinding_cases": 36,
+  "route_cases": 9,
+  "timer": "time.perf_counter internal algorithm elapsed_ms",
+  "environment": {
+    "python": "3.13.5",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41"
+  },
+  "caveats": [
+    "Academic synthetic farm scenarios, not field trials",
+    "Time is environment dependent and excludes UI rendering",
+    "Exact DP is only used on four-zone scenarios",
+    "GA seed=42; timings vary but outputs deterministic",
+    "Model accuracy not independently verified without saved files and test data"
+  ]
+}
