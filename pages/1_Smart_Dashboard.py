@@ -315,3 +315,5 @@ st.markdown('<div class="footer-note">AgroRoute AI is an academic software simul
 st.markdown('</div>', unsafe_allow_html=True)
 
 footer()
+
+st.page_link("pages/11_Autonomous_Workflow.py", label="🚜 Autonomous Workflow")

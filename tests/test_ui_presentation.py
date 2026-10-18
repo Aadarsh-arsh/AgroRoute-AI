@@ -47,7 +47,7 @@ class TestPremiumVisuals(unittest.TestCase):
     def test_all_pages_use_same_design_system(self):
         self.assertTrue((ROOT / '.streamlit/config.toml').exists())
         pages = [ROOT / 'app.py', *sorted((ROOT / 'pages').glob('*.py'))]
-        self.assertEqual(len(pages), 11)
+        self.assertEqual(len(pages), 12)
         for page in pages:
             data = page.read_text(encoding='utf-8')
             with self.subTest(page=page.name):

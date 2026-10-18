@@ -19,11 +19,17 @@ if st.session_state.get('rover_scenario')!=scenario:
     st.session_state.rover_state=None
     st.session_state.rover_mission=None
     st.session_state.rover_playing=False
+# Preserve the safety settings of missions transferred from Autonomous Workflow.
+transfer = st.session_state.pop("rover_transfer_settings", None)
+if transfer is not None:
+    st.session_state["rover_battery_rate"] = float(transfer[0])
+    st.session_state["rover_capacity_input"] = int(transfer[1])
+    st.session_state["rover_reserve_input"] = int(transfer[2])
 with st.sidebar:
     planner=st.selectbox('Mission planner',['Nearest Neighbor','Genetic Algorithm','Exact Dynamic Programming'])
-    per_step=st.slider('Battery consumption per step (%)',0.1,2.0,0.4,0.1)
-    capacity=st.number_input('Inspection capacity',1,30,20)
-    reserve=st.slider('Required battery reserve (%)',0,50,15,5)
+    per_step=st.slider('Battery consumption per step (%)',0.1,2.0,0.4,0.1,key='rover_battery_rate')
+    capacity=st.number_input('Inspection capacity',1,30,20,key='rover_capacity_input')
+    reserve=st.slider('Required battery reserve (%)',0,50,15,5,key='rover_reserve_input')
     if st.button('Generate mission',type='primary',use_container_width=True):
         st.session_state.rover_playing=False
         result=mission(farm,planner,return_to_base=True)
