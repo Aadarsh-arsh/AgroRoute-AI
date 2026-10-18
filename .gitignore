@@ -1,0 +1,17 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+.ipynb_checkpoints/
+.DS_Store
+*.log
+data/raw/
+data/processed/
+models/*.keras
+models/*.h5
+models/*.pt

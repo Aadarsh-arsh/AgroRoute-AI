@@ -1,49 +1,56 @@
-# AgroRoute AI — Phase 1: Farm Designer
+# AgroRoute AI — Phase 2
 
-A working Streamlit farm-grid editor for a future intelligent crop-treatment route optimizer. This phase **does not yet implement route planning, disease classification, or animated rover movement**.
+An AI-based farm designer and pathfinding laboratory built with Python and Streamlit.
 
-## Requirements
-- Windows 10/11
-- Python 3.11 or 3.12 (recommended)
-- Internet connection for initial package installation
+## Features
 
-## Install and run (PowerShell)
+- **Phase 1 preserved:** paint healthy crops, empty ground, obstacles, infected zones (Low/Medium/High), and rover start; create 5×5–30×30 farms; save/load scenario JSON.
+- **Phase 2:** run A*, Uniform Cost Search (UCS), or Greedy Best-First Search to a selected infected zone or manually specified destination.
+- View the calculated path, expanded states, and a comparison table showing path cost, steps, expanded nodes, frontier peak, and runtime.
+- Unit tests for the farm model and search algorithms.
+
+## Windows PowerShell installation
+
+Extract this ZIP. Open the folder **AgroRoute_AI** (the folder containing `app.py`) in VS Code.
+
 ```powershell
-cd "C:\path\to\AgroRoute_AI"
-py -3.11 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-python -m streamlit run app.py
-```
-If `py -3.11` is not available, install Python 3.11 or use `py -3.12` if installed. If PowerShell blocks activation, skip activation and run:
-```powershell
+cd D:\AgroRoute_AI
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe -m streamlit run app.py
 ```
-The browser normally opens at `http://localhost:8501`. Stop with Ctrl+C.
 
-## Features
-- Grid dimensions 5×5 to 30×30
-- Click-to-paint healthy crops, empty paths, obstacles, and infected zones
-- Set infection severity (Low, Medium, High)
-- Set rover start position with placement validation
-- Demo field and reset to blank field
-- Download/import JSON scenario (schema version 1)
-- Live cell counts and infected-zone table
+Open http://localhost:8501 if the browser does not open automatically. In the Streamlit navigation sidebar, select **Algorithm Lab**.
 
-## How to use
-1. Choose a painting tool in the left sidebar.
-2. For infected zones, choose a severity.
-3. Click any cell in the farm grid to paint it.
-4. Select Rover start to move the rover to a traversable cell.
-5. Download the scenario as JSON to preserve your work.
-6. To reload, upload the JSON and click Import uploaded farm.
+If `.venv` already exists from Phase 1, skip `py -m venv .venv` and install the updated requirements.
 
-## Run tests
+## Tests
+
 ```powershell
-python -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-## Next phases
-Phase 2: A*, UCS, Greedy and Genetic Algorithm routing. Phase 3: virtual rover animation. Later: disease classification, CSP and expert system.
+## Search assumptions
+
+- Coordinates are stored as **zero-based (row, column)** and displayed as **one-based**.
+- Movement: up, right, down, left; one unit per move.
+- Obstacles are impassable; healthy crops, empty ground and infected zones are traversable in this simplified simulation.
+- Manhattan distance is the A* and Greedy heuristic.
+- UCS and A* return minimum-step paths on this unit-cost grid. Greedy is not guaranteed optimal.
+- Phase 2 plans one destination at a time. Phase 3 will optimize multi-stop missions using a Genetic Algorithm.
+- Times are illustrative performance measurements on the machine running the app, not controlled benchmarks.
+
+## GitHub update (existing repo)
+
+Keep your existing `.git` folder when updating your local project. Copy new/updated files from the ZIP **into** `D:\AgroRoute_AI`, rather than replacing the entire folder. Do not copy the `.venv` folder.
+
+```powershell
+cd D:\AgroRoute_AI
+git status
+git add app.py requirements.txt README.md .gitignore agroroute pages tests
+git commit -m "feat: add phase 2 AI pathfinding laboratory"
+git push origin main
+```
+
+Repository: https://github.com/Aadarsh-arsh/AgroRoute-AI
