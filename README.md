@@ -104,3 +104,67 @@ cd D:\AgroRoute_AI
 ```
 
 Next priorities: labeled tomato dataset training, proper test split and disease evaluation, travel-aware scheduling, scenario persistence, integration and UI testing.
+
+## Final integration: real labeled-image learning (new page)
+
+The **Real Disease Detection** page trains a real Decision Tree using labeled images on your own computer. No dataset is included and **no validated pretrained disease detector is claimed**. Create directories such as:
+
+```text
+data/plant_leaves/
+  Healthy/leaf1.jpg ...
+  Early_blight/leaf1.jpg ...
+  Late_blight/leaf1.jpg ...
+```
+
+Use **at least five readable images per class** (preferably hundreds). The app extracts RGB/HSV/texture features, creates a stratified held-out split, trains a Decision Tree, reports accuracy, per-class metrics and confusion matrix, and evaluates K-Means clustering via adjusted Rand index. The uploaded photo can be associated with a specific farm cell, and the user must manually assign severity. The updated zone becomes available in Farm Designer and Mission Planner in the same Streamlit session.
+
+**Limitations:** PlantVillage-style images may not generalize to field photos. Avoid data leakage from near-duplicate images and images of the same plant; for research-grade evaluation, use plant-level or source-separated splits and field images. Class probabilities are not calibrated. Never treat these results as pesticide prescriptions. The previous synthetic teaching lab remains separate and clearly labeled.
+
+### Update GitHub after validation
+
+```powershell
+cd D:\AgroRoute_AI
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe -m streamlit run app.py
+# After validating the application:
+git add .
+git commit -m "feat: add real leaf dataset training and zone integration"
+git push origin main
+```
+
+## MobileNetV2 model comparison (optional)
+
+Phase 8 extension adds a real MobileNetV2 classifier and a Decision Tree trained on the **same** stratified 60% training, 15% validation, 25% test split (seed 42). No dataset or trained model is bundled. This is a small educational experiment, not a validated crop diagnosis system.
+
+Windows PowerShell, in the project directory:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-ml.txt
+.\.venv\Scripts\python.exe train_mobilenet.py --data data/plant_leaves --epochs 8
+.\.venv\Scripts\python.exe -m streamlit run app.py
+```
+
+The training script downloads ImageNet MobileNetV2 weights on first use (internet required). CPU training may take several minutes. If TensorFlow cannot install, use a supported 64-bit Python 3.11 virtual environment. Model results and the `.keras` file are saved under `models/mobile_net_v2/` and excluded from Git. The Streamlit **Model Comparison** page shows the saved evaluation and supports image-to-zone assignment. To compare with your earlier 73% baseline, note that this new experiment uses a different train/test split; the new on-page Decision Tree score is the fair same-split comparison.
+
+**Caution:** Review duplicates and related photos across splits. ImageNet pretraining is not a field-validation guarantee; probabilities are uncalibrated. A healthy prediction does not automatically prove a plant is disease-free.
+
+
+## Final refinement update
+
+- Farm Plotly visualization has constrained axes to reduce negative tick labels and excess whitespace.
+- Virtual Rover offers Play 10 steps with adjustable delay, Run to completion, and downloadable mission JSON with zone metadata. The playback is a short blocking demonstration, not background playback or a true pause/resume animation.
+- Model Comparison has a compact percentage-scaled Plotly chart, low-probability warnings, and a downloadable evaluation JSON.
+- Disease labels are saved in Streamlit session state; they do not persist across restarts unless separately exported.
+- Rover battery values are illustrative and not calibrated against hardware.
+
+### Updating GitHub
+
+From the project directory, after verifying the updated pages:
+
+```powershell
+git status
+git add .
+git commit -m "feat: polish rover dashboard and evaluation reporting"
+git push origin main
+```

@@ -19,7 +19,7 @@ if 'message' not in st.session_state:
     st.session_state.message = ''
 
 farm: Farm = st.session_state.farm
-st.markdown('<div class="hero"><h1>🌱 AgroRoute AI</h1><p>Phase 2 · Interactive Farm Designer + AI Pathfinding Laboratory</p></div>', unsafe_allow_html=True)
+st.markdown('<div class="hero"><h1>🌱 AgroRoute AI</h1><p>Intelligent Crop Monitoring · Search Algorithms · Autonomous Rover Simulation</p></div>', unsafe_allow_html=True)
 
 with st.sidebar:
     st.header('🛠️ Farm tools')
@@ -96,7 +96,7 @@ with right:
         st.dataframe([{'Row':r,'Column':c,'Severity':s} for r,c,s in infected], hide_index=True, use_container_width=True)
     else:
         st.info('No infected zones yet. Choose Infected zone and click a cell.')
-    st.subheader('🧭 Phase 2 status')
+    st.subheader('🧭 Project status')
     st.success('Farm editor is operational')
     st.write('**Now available:** use the **Algorithm Lab** page in the navigation sidebar to run A*, UCS and Greedy Best-First.')
-    st.caption('Phase 2 calculates paths; animated rover movement is planned for Phase 4.')
+    st.caption('Use the navigation sidebar for Mission Planner, Virtual Rover, Expert System, CSP and Real Disease Detection.')

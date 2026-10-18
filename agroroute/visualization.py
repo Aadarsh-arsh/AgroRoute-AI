@@ -27,8 +27,8 @@ def farm_figure(farm: Farm, result: SearchResult | None = None, show_explored: b
         fig.add_trace(go.Scatter(x=[result.goal[1]+1],y=[result.goal[0]+1],mode='markers+text',name='Destination',
             text=['G'],textposition='middle center',textfont=dict(color='white',size=10),
             marker=dict(size=22,color='#9b4cbb',line=dict(color='white',width=2))))
-    fig.update_layout(height=max(390,min(750,farm.rows*30)),margin=dict(l=12,r=12,t=18,b=12),
+    fig.update_layout(height=max(440,min(780,farm.rows*37)),margin=dict(l=12,r=12,t=18,b=12),
         paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',legend=dict(orientation='h',y=-.14),
-        xaxis=dict(title='Column',tickmode='linear',dtick=1,range=[.5,farm.cols+.5],side='top'),
-        yaxis=dict(title='Row',tickmode='linear',dtick=1,range=[farm.rows+.5,.5],scaleanchor='x',scaleratio=1))
+        xaxis=dict(title='Column',tickmode='linear',tick0=1,dtick=1,range=[.5,farm.cols+.5],side='top',constrain='domain',showgrid=False,zeroline=False),
+        yaxis=dict(title='Row',tickmode='linear',tick0=1,dtick=1,range=[farm.rows+.5,.5],scaleanchor='x',scaleratio=1,showgrid=False,zeroline=False),autosize=True)
     return fig

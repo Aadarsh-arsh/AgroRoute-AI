@@ -1,4 +1,7 @@
 import streamlit as st
+import time
+import json
+from datetime import datetime, timezone
 import plotly.graph_objects as go
 from agroroute.farm import demo_farm
 from agroroute.mission import mission
@@ -6,6 +9,7 @@ from agroroute.rover import RoverState
 from agroroute.visualization import farm_figure
 st.set_page_config(page_title='AgroRoute | Virtual Rover',page_icon='🤖',layout='wide')
 st.title('🤖 Virtual Rover Simulator')
+st.caption('Live mission dashboard · route execution · inspection telemetry')
 st.caption('Deterministic tick-based rover simulation. Battery use and capacity are illustrative, not hardware-calibrated.')
 farm=st.session_state.get('farm',demo_farm())
 scenario=str(farm.to_dict())
@@ -35,6 +39,21 @@ if rover and result:
             if not rover.tick(farm,per_step): break
     if right.button('↺ Reset rover',use_container_width=True):
         st.session_state.rover_state=RoverState(result.path,capacity=int(capacity)); rover=st.session_state.rover_state
+    st.markdown('#### Automatic simulation')
+    auto1,auto2,auto3=st.columns([1,1,2])
+    speed=auto3.slider('Playback delay (seconds)',0.1,1.5,0.4,0.1)
+    if auto1.button('▶ Play 10 steps',use_container_width=True):
+        progress=st.progress(rover.step/max(1,len(rover.path)-1))
+        for _ in range(10):
+            if not rover.tick(farm,per_step): break
+            progress.progress(rover.step/max(1,len(rover.path)-1))
+            time.sleep(speed)
+        st.rerun()
+    if auto2.button('⏭ Run to completion',use_container_width=True):
+        progress=st.progress(rover.step/max(1,len(rover.path)-1))
+        while rover.tick(farm,per_step):
+            progress.progress(rover.step/max(1,len(rover.path)-1))
+        st.rerun()
     fig=farm_figure(farm)
     fig.add_trace(go.Scatter(x=[c+1 for r,c in rover.path],y=[r+1 for r,c in rover.path],mode='lines',name='Planned route',line=dict(color='#198754',width=4)))
     fig.add_trace(go.Scatter(x=[c+1 for r,c in rover.path[:rover.step+1]],y=[r+1 for r,c in rover.path[:rover.step+1]],mode='lines',name='Travelled',line=dict(color='#2365b7',width=5)))
@@ -44,6 +63,10 @@ if rover and result:
     st.progress(rover.step/max(1,len(rover.path)-1))
     st.write('Visited:',[(r+1,c+1) for r,c in rover.inspected])
     if rover.status=='Completed':st.success('Mission completed!')
+    report={'generated_at_utc':datetime.now(timezone.utc).isoformat(),'farm':farm.name,'planner':result.algorithm,'status':rover.status,'steps_completed':rover.step,'planned_steps':len(rover.path)-1,'battery_remaining_pct':rover.battery,'inspected_zones':[{'row':r+1,'column':c+1,'severity':farm.severities.get(farm.key(r,c),'Medium'),'diagnosis':st.session_state.get('zone_diagnoses',{}).get(farm.key(r,c))} for r,c in rover.inspected],'route':[{'row':r+1,'column':c+1} for r,c in rover.path]}
+    st.download_button('⬇ Download mission report (JSON)',json.dumps(report,indent=2),file_name='agroroute_mission_report.json',mime='application/json')
+    if report['inspected_zones']:
+        st.dataframe(report['inspected_zones'],use_container_width=True)
 else:
     st.info('Click Generate mission to begin rover simulation. Configure infected zones in the Farm Designer first.')
     st.plotly_chart(farm_figure(farm),use_container_width=True)
