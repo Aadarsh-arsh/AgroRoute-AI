@@ -168,3 +168,10 @@ git add .
 git commit -m "feat: polish rover dashboard and evaluation reporting"
 git push origin main
 ```
+
+
+## Unified Smart Agriculture Dashboard (new)
+
+Open **Smart Dashboard** in the Streamlit sidebar. Its guided workflow links farm design, MobileNetV2 prediction, Smart Treatment, Mission Planner and Virtual Rover. Set route and battery parameters and click **Calculate complete mission** to produce a cross-module route and JSON report. Click **Send this route to Virtual Rover** when preflight passes. The rover page independently validates its own settings; match battery settings across both pages if desired.
+
+The dashboard reads the current farm and `zone_diagnoses` from Streamlit session state, so preserve the current browser session as you move between pages. Training data and model files are local and excluded from Git.
