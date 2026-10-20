@@ -14,6 +14,23 @@ class RoverState:
     @property
     def position(self):
         return self.path[self.step] if self.path else None
+    def telemetry(self) -> dict:
+        total_steps = max(0, len(self.path) - 1)
+        completed_steps = min(self.step, total_steps)
+        progress = 100.0 if total_steps == 0 and self.path else (
+            round(completed_steps / total_steps * 100, 1) if total_steps else 0.0
+        )
+        return {
+            'status': self.status,
+            'position': self.position,
+            'step': self.step,
+            'total_steps': total_steps,
+            'completed_steps': completed_steps,
+            'progress_pct': progress,
+            'battery_pct': round(self.battery, 1),
+            'remaining_capacity': self.capacity,
+            'inspected_zones': len(self.inspected),
+        }
 
     def tick(self, farm: Farm, battery_per_step: float = 0.4):
         if not 0 <= battery_per_step <= 100:
