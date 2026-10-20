@@ -24,6 +24,16 @@ class TestFarm(unittest.TestCase):
     def test_bad_import(self):
         with self.assertRaises(ValueError):
             Farm.from_dict({'schema_version':2})
+    def test_parse_key_valid_coordinates(self):
+        self.assertEqual(Farm.parse_key('3,7'), (3, 7))
+        self.assertEqual(Farm.parse_key(' 4, 9 '), (4, 9))
+
+    def test_parse_key_rejects_invalid_coordinates(self):
+        invalid_keys = ('3', '3,4,5', 'row,col', '', '3,')
+        for key in invalid_keys:
+            with self.subTest(key=key):
+                with self.assertRaises(ValueError):
+                    Farm.parse_key(key)
 
 if __name__ == '__main__':
     unittest.main()
