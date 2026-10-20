@@ -31,6 +31,14 @@ class TestPathfinding(unittest.TestCase):
             with self.subTest(algorithm=alg):
                 with self.assertRaises(ValueError):
                     search(farm, (1, 1), alg)
+    def test_all_algorithms_find_reachable_goal(self):
+        farm = demo_farm()
+        for alg in ALGORITHMS:
+            with self.subTest(algorithm=alg):
+                result = search(farm, (11, 11), alg)
+                self.assertTrue(result.found)
+                self.assertEqual(result.path[0], farm.rover)
+                self.assertEqual(result.path[-1], (11, 11))
 
     def test_obstacle_detour(self):
         f=Farm(rows=5,cols=5)
