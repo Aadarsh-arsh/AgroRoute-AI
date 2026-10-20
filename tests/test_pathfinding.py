@@ -24,6 +24,13 @@ class TestPathfinding(unittest.TestCase):
             self.assertEqual(res.cost,4)
             self.assertEqual(res.path[0],(0,0))
             self.assertEqual(res.path[-1],(0,4))
+    def test_invalid_start(self):
+        farm = Farm()
+        farm.paint(1, 1, 'obstacle')
+        for alg in ALGORITHMS:
+            with self.subTest(algorithm=alg):
+                with self.assertRaises(ValueError):
+                    search(farm, (1, 1), alg)
 
     def test_obstacle_detour(self):
         f=Farm(rows=5,cols=5)
