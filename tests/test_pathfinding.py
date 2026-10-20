@@ -10,7 +10,14 @@ class TestPathfinding(unittest.TestCase):
             self.assertTrue(res.found)
             self.assertEqual(res.path,[(0,0)])
             self.assertEqual(res.cost,0)
-
+    def test_straight_route_is_contiguous(self):
+        farm = Farm()
+        for alg in ALGORITHMS:
+            result = search(farm, (0, 6), alg)
+            self.assertTrue(all(
+                abs(a[0] - b[0]) + abs(a[1] - b[1]) == 1
+                for a, b in zip(result.path, result.path[1:])
+            ))
     def test_straight_route(self):
         for alg in ALGORITHMS:
             res=search(Farm(),(0,4),alg)
