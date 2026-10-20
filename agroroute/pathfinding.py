@@ -1,5 +1,6 @@
 """Deterministic four-neighbour grid pathfinding, unit-cost edges."""
 from __future__ import annotations
+from collections.abc import Iterator
 from dataclasses import dataclass
 import heapq
 from itertools import count
@@ -9,8 +10,10 @@ from .farm import Farm
 Position = tuple[int, int]
 ALGORITHMS = ('A*', 'UCS', 'Greedy Best-First')
 
+
 @dataclass
 class SearchResult:
+    """Metrics and route information returned by a pathfinding search."""
     algorithm: str
     start: Position
     goal: Position
@@ -23,18 +26,22 @@ class SearchResult:
 
     @property
     def steps(self) -> int:
+        """Return the number of movement steps in the discovered path."""
         return max(0, len(self.path) - 1)
 
     @property
     def expanded_count(self) -> int:
+        """Return the number of grid nodes expanded during the search."""
         return len(self.explored)
 
 
 def manhattan(a: Position, b: Position) -> int:
+    """Return the Manhattan distance between two grid positions."""
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
 
-def neighbours(farm: Farm, node: Position):
+def neighbours(farm: Farm, node: Position) -> Iterator[Position]:
+    """Yield traversable four-neighbour cells adjacent to a grid position."""
     r, c = node
     for nr, nc in ((r-1,c),(r,c+1),(r+1,c),(r,c-1)):
         if farm.in_bounds(nr,nc) and farm.cells[nr][nc] != 'obstacle':
@@ -42,13 +49,20 @@ def neighbours(farm: Farm, node: Position):
 
 
 def reconstruct(parent: dict[Position, Position], goal: Position) -> list[Position]:
+    """Reconstruct a start-to-goal path from the predecessor mapping."""
     path = [goal]
     while path[-1] in parent:
         path.append(parent[path[-1]])
     return path[::-1]
 
 
-def search(farm: Farm, goal: Position, algorithm: str = 'A*', start: Position | None = None) -> SearchResult:
+def search(
+    farm: Farm,
+    goal: Position,
+    algorithm: str = 'A*',
+    start: Position | None = None,
+) -> SearchResult:
+    """Run the selected pathfinding algorithm and return its search metrics."""
     if algorithm not in ALGORITHMS:
         raise ValueError(f'Unknown algorithm: {algorithm}')
     start = farm.rover if start is None else start
@@ -94,4 +108,5 @@ def search(farm: Farm, goal: Position, algorithm: str = 'A*', start: Position | 
 
 
 def compare(farm: Farm, goal: Position) -> list[SearchResult]:
+    """Run all supported pathfinding algorithms for the same destination."""
     return [search(farm,goal,name) for name in ALGORITHMS]
