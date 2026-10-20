@@ -41,6 +41,11 @@ class TestFarm(unittest.TestCase):
         self.assertEqual(farm.counts()['obstacle'], 1)
         self.assertEqual(farm.counts()['infected'], 1)
         self.assertEqual(farm.counts()['crop'], 142)
+    def test_roundtrip_preserves_farm_name_and_rover(self):
+        farm = Farm(name='Ainesh Test Farm', rover=(2, 3))
+        restored = Farm.from_dict(farm.to_dict())
+        self.assertEqual(restored.name, 'Ainesh Test Farm')
+        self.assertEqual(restored.rover, (2, 3))
 
 if __name__ == '__main__':
     unittest.main()
