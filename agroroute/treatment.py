@@ -69,6 +69,22 @@ def build_zone_plans(farm: Farm, diagnoses: dict | None = None, rain: bool = Fal
             plans.append(ZonePlan(r+1,c+1,severity,disease,probability,priority,action,reason,manual,not rain))
     priority_order = {'High':0,'Medium':1,'Low':2}
     return sorted(plans,key=lambda p:(priority_order[p.priority],p.row,p.column))
+def priority_score(plan: ZonePlan) -> float:
+    """Calculate a transparent 0-100 inspection priority score."""
+    severity_weight = {
+        'High': 60.0,
+        'Medium': 35.0,
+        'Low': 15.0,
+    }
+    score = severity_weight.get(plan.severity, 0.0)
+
+    if plan.probability is not None:
+        score += plan.probability * 30.0
+
+    if plan.manual_review:
+        score += 10.0
+
+    return round(min(100.0, score), 2)
 
 
 def mission_feasibility(steps: int, battery: float, consumption_per_step: float,
