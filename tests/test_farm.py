@@ -34,6 +34,13 @@ class TestFarm(unittest.TestCase):
             with self.subTest(key=key):
                 with self.assertRaises(ValueError):
                     Farm.parse_key(key)
+    def test_counts_update_after_painting(self):
+        farm = Farm()
+        farm.paint(1, 1, 'obstacle')
+        farm.paint(2, 2, 'infected', 'High')
+        self.assertEqual(farm.counts()['obstacle'], 1)
+        self.assertEqual(farm.counts()['infected'], 1)
+        self.assertEqual(farm.counts()['crop'], 142)
 
 if __name__ == '__main__':
     unittest.main()
